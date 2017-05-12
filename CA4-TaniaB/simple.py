@@ -134,6 +134,10 @@ if __name__ == '__main__':
 		writer.writerows(day_view)
 	
 	my_result_file.close()
+	
+	
+	
+	
 	#will continue....	
 	#ex:import csv
  
