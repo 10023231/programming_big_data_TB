@@ -6,7 +6,7 @@ from simple import get_commits, read_file
 class TestCommits(unittest.TestCase):
 
     def setUp(self):
-        self.data = read_file('changes_python.log')
+        self.data = read_file('changes_python.log.txt')
 
     def test_number_of_lines(self):
         self.assertEqual(5255, len(self.data))

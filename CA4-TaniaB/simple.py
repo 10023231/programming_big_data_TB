@@ -1,10 +1,10 @@
-
+import csv
 # open the file - and read all of the lines.
-changes_file = 'changes_python.log'
+changes_file = 'changes_python.log.txt'
 # use strip to strip out spaces and trim the line.
 
-my_file = open(changes_file, 'r')
-data = my_file.readlines()
+#my_file = open(changes_file, 'r')
+#data = my_file.readlines()
 
 data = [line.strip() for line in open(changes_file, 'r')]
 
@@ -60,7 +60,6 @@ commits.reverse()
 for index, commit in enumerate(commits):
     print(commit.get_commit_comment())
 
-#####################################################
 def read_file(changes_file):
     # use strip to strip out spaces and trim the line.
     data = [line.strip() for line in open(changes_file, 'r')]
@@ -88,18 +87,11 @@ def get_commits(data):
             break
     return commits
 
-date_view = []
-author_view = []
-day_view = []	
-name_check = 0
 if __name__ == '__main__':
     # open the file - and read all of the lines.
-    changes_file = 'changes_python.log'
+    changes_file = 'changes_python.log.txt'
     data = read_file(changes_file)
     commits = get_commits(data)
-	date_view = get_date(commits)
-	author_view = get_authors(commits)
-	day_view = get_days(commits)
 
     # print the number of lines read
     print(len(data))
@@ -107,47 +99,24 @@ if __name__ == '__main__':
     print(commits[0])
     print(commits[1]['author'])
     print(len(commits))
+
 	
-	#analysis of dates
-	print (date_view[0])
-	print (date_view[-1])
-	
-	#viewing the author names
-	print (author_view[0])
-	#finding total commits by names
-	name_check = get_names(get_authors)
-	
-	#viewing days
-	print (day_view)
-	
-	#trying to create csv file...hope will work, this time
-	import csv
-	
-	day = [day.split(' ',1)[0] for day in date_view]
-	
-	with open('days.csv','wb'0 as my_result_file:
-		writer = csv.writer(my_result_file, distinct=' ')
-		writer.writerows(day)
-		
-	with open('all_days.csv','wb') as my_result_file:
-		writer = csv.writer(my_result_file, distinct=' ')
-		writer.writerows(day_view)
-	
-	my_result_file.close()
-	
-	
-	
-	
-	#will continue....	
-	#ex:import csv
- 
-#ifile  = open('test.csv', "rb")
-#reader = csv.reader(ifile)
-#ofile  = open('ttest.csv', "wb")
-#writer = csv.writer(ofile, delimiter='', quotechar='"', quoting=csv.QUOTE_ALL)
- 
-#for row in reader:
-#    writer.writerow(row)
- 
-#ifile.close()
-#ofile.close()
+out = open('My_file.csv','w') 
+index = 0
+while index < len(commits):
+	for commit in commits:
+		out.write(commits[index]['revision'])
+		out.write(';')
+		out.write(commits[index]['author'])
+		out.write(';')
+		out.write(commits[index]['date'])
+		out.write(';')
+		out.write(commits[index]['number_of_lines'])
+		out.write(';')
+		out.write(str(commits[index + 1]['commit']))
+		out.write(';')
+		out.write(str(commits[index + 1]['changes']))
+		out.write('\n')
+		index = index + 1
+out.close()	
+print(str(commits[index]['comment']))	
