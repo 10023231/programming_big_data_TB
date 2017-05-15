@@ -59,3 +59,32 @@ commits.reverse()
 
 for index, commit in enumerate(commits):
     print(commit.get_commit_comment())
+	
+def get_commit_list(self):
+	
+	import time
+	import datetime
+	commits = []
+	index = 0
+	while True:
+		try:
+			details = data[index + 1].split('|')
+			revision = int(details[0].strip().strip('r'))
+			author = details[1].strip()
+			fulldate = details[2].strip()
+			year = int((details[2][0:5]).strip())
+			month = int((details[2][6:8]).strip())
+			date = int((details[2][9:11]).strip())
+			specificdate = datetime, date(year, month, date)
+			week = (specificdate.strftime("%w"))
+			comment_line_count = int(details[3].strip().split(' ')[0])
+			changes = data[index+2:data.index('',index+1)]
+			index = data.index(sep, index + 1)
+			comment = data[index-current_commit.comment_line_count:index]
+			detail.append(specificdate)
+		except IndexError:
+			break
+print(len(commits))
+
+
+

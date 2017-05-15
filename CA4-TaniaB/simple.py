@@ -1,10 +1,10 @@
-import csv
+
 # open the file - and read all of the lines.
 changes_file = 'changes_python.log.txt'
 # use strip to strip out spaces and trim the line.
 
-#my_file = open(changes_file, 'r')
-#data = my_file.readlines()
+my_file = open(changes_file, 'r')
+data = my_file.readlines()
 
 data = [line.strip() for line in open(changes_file, 'r')]
 
@@ -25,7 +25,7 @@ class Commit:
         self.comment_line_count = comment_line_count
         self.changes = changes
         self.comment = comment
-
+	
     def get_commit_comment(self):
         return 'svn merge -r' + str(self.revision-1) + ':' + str(self.revision) + ' by ' \
                 + self.author + ' with the comment ' + ','.join(self.comment) \
@@ -86,6 +86,26 @@ def get_commits(data):
         except IndexError:
             break
     return commits
+def get_authors(commits):
+	authors = {}
+	for commit in commits:
+		author = commit['author']
+		if author not in authors:
+			authors[author] = 1
+		else:
+			authors[author] += 1
+	return authors
+
+def get_revision(commits):
+	revisions = {}
+	for commit in commits:
+		revision = commit['revision']
+		if revision not in revisions:
+			revisions[revision] = 1
+		else:
+			revisions[revision] += 1
+	return revisions	
+		
 
 if __name__ == '__main__':
     # open the file - and read all of the lines.
@@ -100,23 +120,32 @@ if __name__ == '__main__':
     print(commits[1]['author'])
     print(len(commits))
 
-	
-out = open('My_file.csv','w') 
-index = 0
-while index < len(commits):
-	for commit in commits:
-		out.write(commits[index]['revision'])
-		out.write(';')
-		out.write(commits[index]['author'])
-		out.write(';')
-		out.write(commits[index]['date'])
-		out.write(';')
-		out.write(commits[index]['number_of_lines'])
-		out.write(';')
-		out.write(str(commits[index + 1]['commit']))
-		out.write(';')
-		out.write(str(commits[index + 1]['changes']))
-		out.write('\n')
-		index = index + 1
+import csv
+from datetime import datetime	
+
+out = open('My_file.csv','w')
+
+writer = csv.writer(out)
+
+writer.writerow(['Revision ', 'Authors ', 'Date ', 'number_of_lines '])
+index = 0	
+
+for commit in commits:
+	out.write(commits[index]['revision'])
+	out.write(';')
+	print(commits[index]['revision'])
+	out.write(commits[index]['author'])
+	out.write(';')
+	print(commits[index]['author'])
+	out.write(commits[index]['date'])
+	out.write(';')
+	print(commits[index]['date'])
+	out.write(commits[index]['number_of_lines'])
+	out.write(';')
+	print(commits[index]['number_of_lines'])
+	out.write(str(commits[index]['comment']))
+	out.write(';')
+	out.write(str(commits[index]['changes']))
+	out.write('\n')
+	index = index +1
 out.close()	
-print(str(commits[index]['comment']))	
