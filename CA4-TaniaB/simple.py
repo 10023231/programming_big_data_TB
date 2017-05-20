@@ -18,19 +18,18 @@ sep = 72*'-'
 class Commit:
     "'class for commits'"
    
-    def __init__(self, month=None, year=None, ddate = None, revision = None, author = None, date = None, comment_line_count = None, changes = None, comment = None):
+    def __init__(self, revision = None, author = None, date = None, comment_line_count = None, changes = None, comment = None):
         self.revision = revision
         self.author = author
         self.date = date
         self.comment_line_count = comment_line_count
         self.changes = changes
         self.comment = comment
-        self.comment = year 
-        self.comment= month
-        self.comment = ddate
+       
+       
     def get_commit_comment(self):
-        return self.revision,self.author,self.ddate,self.month,self.year,self.comment_line_count
-        #return  self.revision + "-" + self.author + "-" + self.month + "-" + self.ddate + "-" + self.year + "-" + self.comment_line_count
+        return self.revision,self.author,self.date,self.comment_line_count
+        #return  self.revision + "-" + self.author + "-" + self.date + "-"  + self.comment_line_count
 		
 		#'svn merge -r' + str(self.revision-1) + ':' + str(self.revision) + ' by ' \
          #       + self.author + ' with the comment ' + ','.join(self.comment) \
@@ -43,27 +42,28 @@ index = 0
 author = {}
 while True:
     try:
+       
         # parse each of the commits and put them into a list of commits
         current_commit = Commit()
         details = data[index + 1].split('|')
         current_commit.revision = int(details[0].strip().strip('r'))
-        current_commit.year = details[2][0:5].strip()
+        
         current_commit.author = details[1].strip()
         current_commit.date = details[2].strip()
-        current_commit.month = details[2][6:8].strip()
-        current_commit.ddate = details[2][9:11].strip()
+        
         current_commit.comment_line_count = int(details[3].strip().split(' ')[0])
-        #current_commit.changes = data[index+2:data.index('',index+1)]
+        current_commit.changes = data[index+2:data.index('',index+1)]
         #print(current_commit.changes)
         index = data.index(sep, index + 1)
         #current_commit.comment = data[index-current_commit.comment_line_count:index]
         commits.append(current_commit)
+        
     except IndexError:
         break
 
 
-
-my_listCsv = [] #csv list 
+#csv list 
+my_listCsv = [] 
 for index, commit in enumerate(commits):
 	sublist = []
 	sublist.append(commit.get_commit_comment())
@@ -76,6 +76,11 @@ with open("My_Result.csv", 'wb') as csvfile:
 		spamwriter.writerow(i) 
 
 print "My_Result.csv was created!"
+
+
+
+
+
 
 #writer.writerow(['Revision ', 'Authors ', 'Date ', 'number_of_lines '])
 #index = 0	

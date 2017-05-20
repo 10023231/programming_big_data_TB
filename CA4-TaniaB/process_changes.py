@@ -84,7 +84,7 @@ def get_commit_list(self):
 			detail.append(specificdate)
 		except IndexError:
 			break
-print(len(commits))
+print(commits)
 
 
 
